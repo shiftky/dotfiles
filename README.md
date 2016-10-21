@@ -1,4 +1,4 @@
-# configuration files
+# dotfiles
 
 ## What's this?
 shiftky's configuration files
@@ -8,13 +8,5 @@ shiftky's configuration files
 ```
 git clone https://github.com/shiftky/dotfiles.git ~/.dotfiles
 cd ~/.dotfiles
-./install.py [PROFILE_NAME]
-```
-
-### Install AppStore apps
-
-```
-# System Preferences > App Store > Password Settings > Free Downloads: [Save Password]
-mas signin APPLE_ID PASSWORD
-./scripts/mas_install.sh
+./install.sh
 ```
