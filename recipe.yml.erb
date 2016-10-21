@@ -1,11 +1,59 @@
 resources:
+  ## dotfiles
   <%- dotfiles.each do |file| -%>
   - type: symlink
     source: <%= ENV['HOME'] %>/.<%= file %>
     destination: <%= ENV['HOME'] %>/.dotfiles/conf/<%= file %>
   <%- end -%>
 
+  ## rbenv
+  - type: git
+    path: <%= ENV['HOME'] %>/.rbenv
+    repository: <%= rbenv_repo %>
+  - type: git
+    path: <%= ENV['HOME'] %>/.rbenv/plugins/ruby-build
+    repository: <%= ruby_build_repo %>
+
+  ## dein.vim
+  - type: directory
+    path: <%= ENV['HOME'] %>/.vim/bundle
+  - type: git
+    path: <%= ENV['HOME'] %>/.vim/bundle/dein.vim
+    repository: https://github.com/Shougo/dein.vim.git
+
+  ## Homebrew packages
   <%- homebrew_packages.each do |pkg| -%>
   - type: homebrew_package
     name: <%= pkg %>
   <%- end -%>
+
+  ## powerline
+  - type: homebrew_package
+    name: python
+  - type: command
+    check_script: pip list | grep powerline-status
+    script: pip install --user powerline-status
+
+  ## monaco for powerline
+  - type: command
+    check_script: ls -l /Library/Fonts/ | grep -E 'Monaco for Powerline.otf'
+    script: |
+      wget "<%= monaco_for_powerline_url %>" -O "/tmp/Monaco for Powerline.otf"
+      mv "/tmp/Monaco for Powerline.otf" /Library/Fonts
+
+  ## AppStore applications
+  <%- appstore_apps.each do |app_id, app_name| -%>
+  - type: command
+    check_script: ls -l /Applications/ | grep -E '<%= app_name %>'
+    script: mas install <%= app_id %>
+  <%- end -%>
+
+  ## iterm2-japanesque
+  ## http://this.aereal.org/entry/2013/01/02/222304
+  - type: directory
+    path: <%= ENV['HOME'] %>/.dotfiles/tmp
+  - type: command
+    check_script: ls -l <%= ENV['HOME'] %>/.dotfiles/tmp/Japanesque.itermcolors
+    script: |
+      wget "<%= japanesque_url %>" -O "<%= ENV['HOME'] %>/.dotfiles/tmp/Japanesque.itermcolors"
+      open "<%= ENV['HOME'] %>/.dotfiles/tmp/Japanesque.itermcolors"
