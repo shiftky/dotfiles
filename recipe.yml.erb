@@ -1,0 +1,11 @@
+resources:
+  <%- dotfiles.each do |file| -%>
+  - type: symlink
+    source: <%= ENV['HOME'] %>/.<%= file %>
+    destination: <%= ENV['HOME'] %>/.dotfiles/conf/<%= file %>
+  <%- end -%>
+
+  <%- homebrew_packages.each do |pkg| -%>
+  - type: homebrew_package
+    name: <%= pkg %>
+  <%- end -%>

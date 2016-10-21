@@ -1,0 +1,18 @@
+dotfiles:
+  - pryrc
+  - tmux.conf
+  - vimperatorrc
+  - vimrc
+  - vrapperrc
+  - zshrc
+
+homebrew_packages:
+  - tmux
+  - reattach-to-user-namespace
+  - vim
+  - direnv
+  - tree
+  - wget
+  - jq
+  - mas
+  - htop
